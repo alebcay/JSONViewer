@@ -48,7 +48,6 @@ namespace EPocalipse.Json.Viewer
                 if( _json != value )
                 {
                     _json = value.Trim();
-                    txtJson.Text = _json;
                     Redraw();
                 }
             }
