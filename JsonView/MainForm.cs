@@ -120,11 +120,10 @@ namespace EPocalipse.Json.JsonView
         {
             Control c;
             c = this.JsonViewer.Controls.Find("txtJson", true)[0];
-            string text;
             if (((RichTextBox)c).SelectionLength > 0)
-                text = ((RichTextBox)c).SelectedText;
+                _ = ((RichTextBox)c).SelectedText;
             else
-                text = ((RichTextBox)c).Text;
+                _ = ((RichTextBox)c).Text;
             ((RichTextBox)c).SelectedText = "";
         }
 
