@@ -1,10 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
 using Newtonsoft.Json;
-using System.Collections.ObjectModel;
 using System.Runtime.Serialization;
-using System.Collections;
 using Newtonsoft.Json.Linq;
 
 namespace EPocalipse.Json.Viewer

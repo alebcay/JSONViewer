@@ -1,10 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.VisualStudio.DebuggerVisualizers;
 using System.Diagnostics;
 
-[assembly: DebuggerVisualizer(typeof(EPocalipse.Json.Visualizer.JsonVisualizer), 
+[assembly: DebuggerVisualizer(typeof(EPocalipse.Json.Visualizer.JsonVisualizer),
     Target = typeof(string), Description = "JSON")]
 
 namespace EPocalipse.Json.Visualizer
