@@ -67,7 +67,7 @@ namespace EPocalipse.Json.Viewer
             this.btnViewSelected = new System.Windows.Forms.ToolStripButton();
             this.lblError = new System.Windows.Forms.LinkLabel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
+            ((System.ComponentModel.ISupportInitialize)(this.spcViewer)).BeginInit();
             this.spcViewer.Panel1.SuspendLayout();
             this.spcViewer.Panel2.SuspendLayout();
             this.spcViewer.SuspendLayout();
@@ -337,7 +337,7 @@ namespace EPocalipse.Json.Viewer
             this.txtJson.TabIndex = 7;
             this.txtJson.Text = "";
             this.txtJson.SelectionChanged += new System.EventHandler(this.txtJson_SelectionChanged);
-            this.txtJson.TextChanged += new System.EventHandler(this.txtJson_TextChanged);
+            this.txtJson.TextChanged += new System.EventHandler(this.txtJson_TextChangedAsync);
             // 
             // toolStrip1
             // 
@@ -468,10 +468,12 @@ namespace EPocalipse.Json.Viewer
             this.lblError.Name = "lblError";
             this.lblError.Size = new System.Drawing.Size(1556, 46);
             this.lblError.TabIndex = 5;
-            this.lblError.TabStop = true;
-            this.lblError.Text = "aa";
             this.lblError.VisitedLinkColor = System.Drawing.Color.Red;
             this.lblError.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.lblError_LinkClicked);
+            // 
+            // backgroundWorker1
+            // 
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.BackgroundWorker1_DoWork);
             // 
             // JsonViewer
             // 
@@ -484,6 +486,7 @@ namespace EPocalipse.Json.Viewer
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.JsonViewer_KeyDown);
             this.spcViewer.Panel1.ResumeLayout(false);
             this.spcViewer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.spcViewer)).EndInit();
             this.spcViewer.ResumeLayout(false);
             this.mnuTree.ResumeLayout(false);
             this.pnlFind.ResumeLayout(false);
@@ -537,7 +540,6 @@ namespace EPocalipse.Json.Viewer
         private System.Windows.Forms.ToolStripButton btnViewSelected;
         private System.Windows.Forms.RichTextBox txtJson;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.ToolStripMenuItem mnuCopyName;
 
     }

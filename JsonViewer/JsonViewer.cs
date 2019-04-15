@@ -9,12 +9,15 @@ using Newtonsoft.Json;
 using System.IO;
 using System.Threading;
 using EPocalipse.Json.Viewer.Properties;
+using System.Threading.Tasks;
 
 namespace EPocalipse.Json.Viewer
 {
     public partial class JsonViewer : UserControl
     {
         private string _json;
+        private JsonObjectTree _tree;
+        private JsonObjectTree _oldTree;
         private ErrorDetails _errorDetails;
         private PluginsManager _pluginsManager = new PluginsManager();
         bool _updating;
@@ -31,6 +34,22 @@ namespace EPocalipse.Json.Viewer
             catch( Exception e )
             {
                 MessageBox.Show(string.Format( Resources.ConfigMessage, e.Message ), "Json Viewer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+            backgroundWorker1.WorkerSupportsCancellation = true;
+            tabControl.SelectedIndexChanged += new EventHandler(tabControl_SelectedIndexChanged);
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch ((sender as TabControl).SelectedIndex)
+            {
+                case 0:
+                    if (_tree != null && _tree != _oldTree)
+                    {
+                        VisualizeJsonTree(_tree);
+                        _oldTree = _tree;
+                    }
+                    break;
             }
         }
 
@@ -61,11 +80,12 @@ namespace EPocalipse.Json.Viewer
                 tvJson.BeginUpdate();
                 try
                 {
-                    Reset();
                     if( !string.IsNullOrEmpty( _json ) )
                     {
-                        JsonObjectTree tree = JsonObjectTree.Parse( _json );
-                        VisualizeJsonTree( tree );
+                        backgroundWorker1.RunWorkerAsync();
+                    } else
+                    {
+                        Reset();
                     }
                 }
                 finally
@@ -113,7 +133,7 @@ namespace EPocalipse.Json.Viewer
             if( _errorDetails.Position == 0 )
                 _errorDetails._pos = _json.Length;
             if( !txtJson.ContainsFocus )
-                MarkError( _errorDetails );
+                // MarkError( _errorDetails );
             ShowInfo( _errorDetails );
         }
 
@@ -122,8 +142,11 @@ namespace EPocalipse.Json.Viewer
             ignoreSelChange = true;
             try
             {
-                txtJson.Select( Math.Max( 0, _errorDetails.Position - 1 ), 10 );
-                txtJson.ScrollToCaret();
+                Action markErr = () => {
+                    txtJson.Select(Math.Max(0, _errorDetails.Position - 1), 10);
+                    txtJson.ScrollToCaret();
+                };
+                txtJson.Invoke(markErr);
             }
             finally
             {
@@ -133,6 +156,7 @@ namespace EPocalipse.Json.Viewer
 
         private void VisualizeJsonTree( JsonObjectTree tree )
         {
+            tvJson.Nodes.Clear();
             AddNode( tvJson.Nodes, tree.Root );
             JsonViewerTreeNode node = GetRootNode();
             InitVisualizers( node );
@@ -171,19 +195,29 @@ namespace EPocalipse.Json.Viewer
 
         public void ShowInfo( string info )
         {
-            lblError.Text = info;
-            lblError.Tag = null;
-            lblError.Enabled = false;
-            tabControl.SelectedTab = pageTextView;
+            Action errInfo = () =>
+            {
+                lblError.Text = info;
+                lblError.Tag = null;
+                lblError.Enabled = false;
+            };
+            lblError.Invoke(errInfo);
+            Action tabErrInfo = () => tabControl.SelectedTab = pageTextView;
+            tabControl.Invoke(tabErrInfo);
         }
 
         public void ShowInfo( ErrorDetails error )
         {
             ShowInfo( error.Error );
-            lblError.Text = error.Error;
-            lblError.Tag = error;
-            lblError.Enabled = true;
-            tabControl.SelectedTab = pageTextView;
+            Action errInfo = () =>
+            {
+                lblError.Text = error.Error;
+                lblError.Tag = error;
+                lblError.Enabled = true;
+            };
+            lblError.Invoke(errInfo);
+            Action tabErrInfo = () => tabControl.SelectedTab = pageTextView;
+            tabControl.Invoke(tabErrInfo);
         }
 
         public void ClearInfo()
@@ -202,8 +236,17 @@ namespace EPocalipse.Json.Viewer
 
         public int MaxErrorCount1 { get => MaxErrorCount; set => MaxErrorCount = value; }
 
-        private void txtJson_TextChanged( object sender, EventArgs e )
+        private async void txtJson_TextChangedAsync( object sender, EventArgs e )
         {
+            async Task<bool> UserKeepsTyping()
+            {
+                string txt = txtJson.Text;   // remember text
+                await Task.Delay(500);        // wait some
+                return txt != txtJson.Text;  // return that text chaged or not
+            }
+            if (await UserKeepsTyping()) return;
+            // user is done typing, do your stuff  
+            lblError.ResetText();
             Json = txtJson.Text;
             btnViewSelected.Checked = false;
         }
@@ -672,6 +715,18 @@ namespace EPocalipse.Json.Viewer
             {
                 _json = txtJson.SelectedText.Trim();
                 Redraw();
+            }
+        }
+
+        private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                _tree = JsonObjectTree.Parse(_json);
+            }
+            catch (JsonParseError err)
+            {
+                GetParseErrorDetails(err);
             }
         }
     }
