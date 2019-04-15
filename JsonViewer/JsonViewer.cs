@@ -15,7 +15,6 @@ namespace EPocalipse.Json.Viewer
     public partial class JsonViewer : UserControl
     {
         private string _json;
-        private int _maxErrorCount = 25;
         private ErrorDetails _errorDetails;
         private PluginsManager _pluginsManager = new PluginsManager();
         bool _updating;
@@ -31,7 +30,7 @@ namespace EPocalipse.Json.Viewer
             }
             catch( Exception e )
             {
-                MessageBox.Show( String.Format( Resources.ConfigMessage, e.Message ), "Json Viewer", MessageBoxButtons.OK, MessageBoxIcon.Warning );
+                MessageBox.Show(string.Format( Resources.ConfigMessage, e.Message ), "Json Viewer", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
 
@@ -52,18 +51,8 @@ namespace EPocalipse.Json.Viewer
             }
         }
 
-        [DefaultValue( 25 )]
-        public int MaxErrorCount
-        {
-            get
-            {
-                return _maxErrorCount;
-            }
-            set
-            {
-                _maxErrorCount = value;
-            }
-        }
+        [DefaultValue(25)]
+        public int MaxErrorCount { get; set; } = 25;
 
         private void Redraw()
         {
@@ -73,7 +62,7 @@ namespace EPocalipse.Json.Viewer
                 try
                 {
                     Reset();
-                    if( !String.IsNullOrEmpty( _json ) )
+                    if( !string.IsNullOrEmpty( _json ) )
                     {
                         JsonObjectTree tree = JsonObjectTree.Parse( _json );
                         VisualizeJsonTree( tree );
@@ -177,7 +166,7 @@ namespace EPocalipse.Json.Viewer
 
         public void Clear()
         {
-            Json = String.Empty;
+            Json = string.Empty;
         }
 
         public void ShowInfo( string info )
@@ -199,7 +188,7 @@ namespace EPocalipse.Json.Viewer
 
         public void ClearInfo()
         {
-            lblError.Text = String.Empty;
+            lblError.Text = string.Empty;
         }
 
         [Browsable( false )]
@@ -210,6 +199,8 @@ namespace EPocalipse.Json.Viewer
                 return _errorDetails._err != null;
             }
         }
+
+        public int MaxErrorCount1 { get => MaxErrorCount; set => MaxErrorCount = value; }
 
         private void txtJson_TextChanged( object sender, EventArgs e )
         {
@@ -253,7 +244,7 @@ namespace EPocalipse.Json.Viewer
 
         public TreeNode FindNext( TreeNode startNode, string text, bool includeSelected )
         {
-            if( text == String.Empty )
+            if( text == string.Empty )
                 return startNode;
 
             if( includeSelected && IsMatchingNode( startNode, text ) )
@@ -715,61 +706,27 @@ namespace EPocalipse.Json.Viewer
 
     public class JsonViewerTreeNode : TreeNode
     {
-        JsonObject _jsonObject;
-        List<ICustomTextProvider> _textVisualizers = new List<ICustomTextProvider>();
-        List<IJsonVisualizer> _visualizers = new List<IJsonVisualizer>();
-        private bool _init;
-        private IJsonVisualizer _lastVisualizer;
-
         public JsonViewerTreeNode( JsonObject jsonObject )
         {
-            _jsonObject = jsonObject;
+            JsonObject = jsonObject;
         }
 
-        public List<ICustomTextProvider> TextVisualizers
-        {
-            get
-            {
-                return _textVisualizers;
-            }
-        }
+        public List<ICustomTextProvider> TextVisualizers { get; } = new List<ICustomTextProvider>();
 
-        public List<IJsonVisualizer> Visualizers
-        {
-            get
-            {
-                return _visualizers;
-            }
-        }
+        public List<IJsonVisualizer> Visualizers { get; } = new List<IJsonVisualizer>();
 
-        public JsonObject JsonObject
-        {
-            get
-            {
-                return _jsonObject;
-            }
-        }
+        public JsonObject JsonObject { get; }
 
-        internal bool Initialized
-        {
-            get
-            {
-                return _init;
-            }
-            set
-            {
-                _init = value;
-            }
-        }
+        internal bool Initialized { get; set; }
 
         internal void RefreshText()
         {
-            StringBuilder sb = new StringBuilder( _jsonObject.Text );
-            foreach( ICustomTextProvider textVisualizer in _textVisualizers )
+            StringBuilder sb = new StringBuilder( JsonObject.Text );
+            foreach( ICustomTextProvider textVisualizer in TextVisualizers )
             {
                 try
                 {
-                    string customText = textVisualizer.GetText( _jsonObject );
+                    string customText = textVisualizer.GetText( JsonObject );
                     sb.Append( " (" + customText + ")" );
                 }
                 catch
@@ -778,21 +735,11 @@ namespace EPocalipse.Json.Viewer
                 }
             }
             string text = sb.ToString();
-            if( text != this.Text )
-                this.Text = text;
+            if( text != Text )
+                Text = text;
         }
 
-        public IJsonVisualizer LastVisualizer
-        {
-            get
-            {
-                return _lastVisualizer;
-            }
-            set
-            {
-                _lastVisualizer = value;
-            }
-        }
+        public IJsonVisualizer LastVisualizer { get; set; }
     }
 
     public enum Tabs { Viewer, Text };

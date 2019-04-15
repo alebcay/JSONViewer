@@ -57,7 +57,7 @@ namespace EPocalipse.Json.Viewer
     class JsonTreeObjectPropertyDescriptor : PropertyDescriptor
     {
         JsonObject _jsonObject;
-        JsonObject[] _jsonObjects;
+        private JsonObject[] _jsonObjects;
 
         public JsonTreeObjectPropertyDescriptor(JsonObject jsonObject)
             : base(jsonObject.Id, null)
@@ -128,6 +128,8 @@ namespace EPocalipse.Json.Viewer
                 }
             }
         }
+
+        public JsonObject[] JsonObjects { get => _jsonObjects; set => _jsonObjects = value; }
 
         public override void ResetValue(object component)
         {

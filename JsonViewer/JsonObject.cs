@@ -16,65 +16,30 @@ namespace EPocalipse.Json.Viewer
             TypeDescriptor.AddProvider(new JsonObjectTypeDescriptionProvider(), typeof(JsonObject));
         }
 
-        private string _id;
-        private object _value;
-        private JsonType _jsonType;
-        private JsonFields _fields;
-        private JsonObject _parent;
         private string _text;
 
         public JsonObject()
         {
-            _fields=new JsonFields(this);
+            Fields=new JsonFields(this);
         }
 
-        public string Id
-        {
-            get
-            {
-                return _id;
-            }
-            set
-            {
-                _id = value;
-            }
-        }
+        public string Id { get; set; }
 
         public object Value
         {
             get
             {
-                return _value;
+                return Value1;
             }
             set
             {
-                _value = value;
+                Value1 = value;
             }
         }
 
-        public JsonType JsonType
-        {
-            get
-            {
-                return _jsonType;
-            }
-            set
-            {
-                _jsonType = value;
-            }
-        }
+        public JsonType JsonType { get; set; }
 
-        public JsonObject Parent
-        {
-            get
-            {
-                return _parent;
-            }
-            set
-            {
-                _parent = value;
-            }
-        }
+        public JsonObject Parent { get; set; }
 
         public string Text
         {
@@ -87,7 +52,7 @@ namespace EPocalipse.Json.Viewer
                         string val = (Value == null ? "<null>" : Value.ToString());
                         if (Value is string)
                             val = "\"" + val + "\"";
-                        _text = String.Format("{0} : {1}", Id, val);
+                        _text = string.Format("{0} : {1}", Id, val);
                     }
                     else
                         _text = Id;
@@ -96,13 +61,9 @@ namespace EPocalipse.Json.Viewer
             }
         }
 
-        public JsonFields Fields
-        {
-            get
-            {
-                return _fields;
-            }
-        }
+        public JsonFields Fields { get; }
+
+        public object Value1 { get; set; }
 
         internal void Modified()
         {
@@ -113,7 +74,7 @@ namespace EPocalipse.Json.Viewer
         {
             foreach (string s in ids)
             {
-            if (!_fields.ContainId(s))
+            if (!Fields.ContainId(s))
                 return false;
             }
             return true;

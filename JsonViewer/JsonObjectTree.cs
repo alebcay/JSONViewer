@@ -19,8 +19,6 @@ namespace EPocalipse.Json.Viewer
 
     public class JsonObjectTree
     {
-        private JsonObject _root;
-
         public static JsonObjectTree Parse( string json )
         {
             //Parse the JSON string
@@ -39,7 +37,7 @@ namespace EPocalipse.Json.Viewer
 
         public JsonObjectTree( object rootObject )
         {
-            _root = ConvertToObject( "JSON", rootObject );
+            Root = ConvertToObject( "JSON", rootObject );
         }
 
         private JsonObject ConvertToObject( string id, object jsonObject )
@@ -88,13 +86,7 @@ namespace EPocalipse.Json.Viewer
             return obj;
         }
 
-        public JsonObject Root
-        {
-            get
-            {
-                return _root;
-            }
-        }
+        public JsonObject Root { get; }
 
     }
 }
