@@ -2,6 +2,7 @@ using System;
 using System.Windows.Forms;
 using EPocalipse.Json.Viewer;
 using System.IO;
+using System.ComponentModel;
 
 namespace EPocalipse.Json.JsonView
 {
@@ -10,6 +11,30 @@ namespace EPocalipse.Json.JsonView
         public MainForm()
         {
             InitializeComponent();
+            JsonViewer.PropertyChanged += new PropertyChangedEventHandler(JsonViewer_PropertyChanged);
+        }
+
+        private void JsonViewer_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Mode")
+            {
+                switch (JsonViewer.Mode)
+                {
+                    case 0:
+                        toolStripStatusLabel1.Text = "Ready";
+                        break;
+                    case 1:
+                        toolStripStatusLabel1.Text = "Waiting for input";
+                        break;
+                    case 2:
+                        toolStripStatusLabel1.Text = "Parsing JSON";
+                        break;
+                    case 3:
+                        toolStripStatusLabel1.Text = "Errors occurred while parsing JSON";
+                        break;
+                }
+                
+            }
         }
 
         private void MainForm_Shown(object sender, EventArgs e)

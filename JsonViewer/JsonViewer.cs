@@ -13,9 +13,10 @@ using System.Threading.Tasks;
 
 namespace EPocalipse.Json.Viewer
 {
-    public partial class JsonViewer : UserControl
+    public partial class JsonViewer : UserControl, INotifyPropertyChanged
     {
         private string _json;
+        private int _mode = 0;
         private JsonObjectTree _tree;
         private JsonObjectTree _oldTree;
         private ErrorDetails _errorDetails;
@@ -23,6 +24,8 @@ namespace EPocalipse.Json.Viewer
         bool _updating;
         Control _lastVisualizerControl;
         private bool ignoreSelChange;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         public JsonViewer()
         {
@@ -70,6 +73,24 @@ namespace EPocalipse.Json.Viewer
             }
         }
 
+        // 0: ready/idle
+        // 1: waiting for user
+        // 2: parsing
+        // 3: error
+        [DefaultValue(0)]
+        public int Mode
+        {
+            get
+            {
+                return _mode;
+            }
+            set
+            {
+                _mode = value;
+                PropertyChanged(this, new PropertyChangedEventArgs("Mode"));
+            }
+        }
+
         [DefaultValue(25)]
         public int MaxErrorCount { get; set; } = 25;
 
@@ -92,10 +113,6 @@ namespace EPocalipse.Json.Viewer
                 {
                     tvJson.EndUpdate();
                 }
-            }
-            catch( JsonParseError e )
-            {
-                GetParseErrorDetails( e );
             }
             catch( Exception e )
             {
@@ -238,17 +255,19 @@ namespace EPocalipse.Json.Viewer
 
         private async void txtJson_TextChangedAsync( object sender, EventArgs e )
         {
+            Mode = 1;
             async Task<bool> UserKeepsTyping()
             {
-                string txt = txtJson.Text;   // remember text
-                await Task.Delay(500);        // wait some
-                return txt != txtJson.Text;  // return that text chaged or not
+                string txt = txtJson.Text;
+                await Task.Delay(500);
+                return txt != txtJson.Text;
             }
             if (await UserKeepsTyping()) return;
-            // user is done typing, do your stuff  
-            lblError.ResetText();
+            ClearInfo();
+            Mode = 2;
             Json = txtJson.Text;
             btnViewSelected.Checked = false;
+            if (Mode == 2) Mode = 0;
         }
 
         private void txtFind_TextChanged( object sender, EventArgs e )
@@ -723,10 +742,12 @@ namespace EPocalipse.Json.Viewer
             try
             {
                 _tree = JsonObjectTree.Parse(_json);
+                Mode = 0;
             }
             catch (JsonParseError err)
             {
                 GetParseErrorDetails(err);
+                Mode = 3;
             }
         }
     }
