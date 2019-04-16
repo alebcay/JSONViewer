@@ -126,6 +126,7 @@ namespace EPocalipse.Json.Viewer
             pnlVisualizer.Controls.Clear();
             _lastVisualizerControl = null;
             cbVisualizers.Items.Clear();
+            GC.Collect();
         }
 
         private void GetParseErrorDetails( Exception parserError )
@@ -171,6 +172,7 @@ namespace EPocalipse.Json.Viewer
             InitVisualizers( node );
             node.Expand();
             tvJson.SelectedNode = node;
+            GC.Collect();
         }
 
         private void AddNode( TreeNodeCollection nodes, JsonObject jsonObject )
@@ -750,6 +752,7 @@ namespace EPocalipse.Json.Viewer
                             Mode = 3;
                         }
                         VisualizeJsonTree(_tree);
+                        _oldTree = _tree;
                     }
                     else
                     {
