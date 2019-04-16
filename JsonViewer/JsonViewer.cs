@@ -164,6 +164,7 @@ namespace EPocalipse.Json.Viewer
 
         private void VisualizeJsonTree( JsonObjectTree tree )
         {
+            if (tree == null) return;
             tvJson.Nodes.Clear();
             AddNode( tvJson.Nodes, tree.Root );
             JsonViewerTreeNode node = GetRootNode();
@@ -720,6 +721,49 @@ namespace EPocalipse.Json.Viewer
             {
                 GetParseErrorDetails(err);
                 Mode = 3;
+            }
+        }
+
+        public void refreshFromString(string text)
+        {
+            txtJson.Text = text;
+            if (_json != text)
+            {
+                _json = text.Trim();
+                Redraw();
+            }
+            try
+            {
+                tvJson.BeginUpdate();
+                try
+                {
+                    if (!string.IsNullOrEmpty(_json))
+                    {
+                        try
+                        {
+                            _tree = JsonObjectTree.Parse(_json);
+                            Mode = 0;
+                        }
+                        catch (JsonParseError err)
+                        {
+                            GetParseErrorDetails(err);
+                            Mode = 3;
+                        }
+                        VisualizeJsonTree(_tree);
+                    }
+                    else
+                    {
+                        Reset();
+                    }
+                }
+                finally
+                {
+                    tvJson.EndUpdate();
+                }
+            }
+            catch (Exception e)
+            {
+                ShowException(e);
             }
         }
     }

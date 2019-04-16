@@ -58,7 +58,7 @@ namespace EPocalipse.Json.JsonView
         {
             string json = File.ReadAllText(fileName);
             JsonViewer.ShowTab(Tabs.Viewer);
-            JsonViewer.Json = json;
+            JsonViewer.refreshFromString(json);
         }
 
         private void LoadFromClipboard()
