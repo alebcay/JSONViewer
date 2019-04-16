@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("JsonViewer")]
 [assembly: AssemblyDescription("A standalone viewer for JSON objects.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("EPocalipse Software")]
+[assembly: AssemblyCompany("EPocalipse Software and Others")]
 [assembly: AssemblyProduct("JsonViewer")]
-[assembly: AssemblyCopyright("Copyright ©  2008")]
+[assembly: AssemblyCopyright("© 2008 EPocalipse Software, © 2019 others")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("1.1.0.0")]
-[assembly: AssemblyFileVersion("1.1.0.0")]
+[assembly: AssemblyVersion("1.2.0.0")]
+[assembly: AssemblyFileVersion("1.2.0.0")]
