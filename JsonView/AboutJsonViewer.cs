@@ -1,6 +1,7 @@
 using System;
 using System.Windows.Forms;
 using System.Reflection;
+using System.Diagnostics;
 
 namespace EPocalipse.Json.JsonView
 {
@@ -108,5 +109,17 @@ namespace EPocalipse.Json.JsonView
             }
         }
         #endregion
+
+        private void AboutJsonViewer_Load(object sender, EventArgs e)
+        {
+            LinkLabel.Link link = new LinkLabel.Link();
+            link.LinkData = "https://www.flaticon.com/authors/vaadin";
+            linkLabel1.Links.Add(link);
+        }
+
+        private void LinkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            Process.Start(e.Link.LinkData as string);
+        }
     }
 }

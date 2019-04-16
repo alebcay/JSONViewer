@@ -279,16 +279,16 @@ namespace EPocalipse.Json.JsonView
             this.statusStrip1.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 1050);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 1051);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1666, 38);
+            this.statusStrip1.Size = new System.Drawing.Size(1666, 37);
             this.statusStrip1.TabIndex = 2;
             this.statusStrip1.Text = "statusStrip1";
             // 
             // toolStripStatusLabel1
             // 
             this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(79, 33);
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(79, 32);
             this.toolStripStatusLabel1.Text = "Ready";
             // 
             // MainForm
@@ -299,6 +299,7 @@ namespace EPocalipse.Json.JsonView
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.JsonViewer);
             this.Controls.Add(this.menuStrip1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Margin = new System.Windows.Forms.Padding(6);
             this.Name = "MainForm";

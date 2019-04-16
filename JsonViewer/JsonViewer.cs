@@ -20,10 +20,9 @@ namespace EPocalipse.Json.Viewer
         private JsonObjectTree _tree;
         private JsonObjectTree _oldTree;
         private ErrorDetails _errorDetails;
-        private PluginsManager _pluginsManager = new PluginsManager();
+        private readonly PluginsManager _pluginsManager = new PluginsManager();
         bool _updating;
         Control _lastVisualizerControl;
-        private bool ignoreSelChange;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -156,19 +155,11 @@ namespace EPocalipse.Json.Viewer
 
         private void MarkError( ErrorDetails _errorDetails )
         {
-            ignoreSelChange = true;
-            try
-            {
-                Action markErr = () => {
-                    txtJson.Select(Math.Max(0, _errorDetails.Position - 1), 10);
-                    txtJson.ScrollToCaret();
-                };
-                txtJson.Invoke(markErr);
-            }
-            finally
-            {
-                ignoreSelChange = false;
-            }
+            Action markErr = () => {
+                txtJson.Select(Math.Max(0, _errorDetails.Position - 1), 10);
+                txtJson.ScrollToCaret();
+            };
+            txtJson.Invoke(markErr);
         }
 
         private void VisualizeJsonTree( JsonObjectTree tree )
@@ -266,7 +257,6 @@ namespace EPocalipse.Json.Viewer
             ClearInfo();
             Mode = 2;
             Json = txtJson.Text;
-            btnViewSelected.Checked = false;
             if (Mode == 2) Mode = 0;
         }
 
@@ -717,24 +707,6 @@ namespace EPocalipse.Json.Viewer
                 text = text.Replace( ch.ToString(), "" );
             }
             txtJson.Text = text;
-        }
-
-        private void btnViewSelected_Click( object sender, EventArgs e )
-        {
-            if( btnViewSelected.Checked )
-                _json = txtJson.SelectedText.Trim();
-            else
-                _json = txtJson.Text.Trim();
-            Redraw();
-        }
-
-        private void txtJson_SelectionChanged( object sender, EventArgs e )
-        {
-            if( btnViewSelected.Checked && !ignoreSelChange )
-            {
-                _json = txtJson.SelectedText.Trim();
-                Redraw();
-            }
         }
 
         private void BackgroundWorker1_DoWork(object sender, DoWorkEventArgs e)

@@ -64,7 +64,6 @@ namespace EPocalipse.Json.Viewer
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
             this.removenToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeSpecialCharsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnViewSelected = new System.Windows.Forms.ToolStripButton();
             this.lblError = new System.Windows.Forms.LinkLabel();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             ((System.ComponentModel.ISupportInitialize)(this.spcViewer)).BeginInit();
@@ -336,7 +335,6 @@ namespace EPocalipse.Json.Viewer
             this.txtJson.Size = new System.Drawing.Size(1556, 1018);
             this.txtJson.TabIndex = 7;
             this.txtJson.Text = "";
-            this.txtJson.SelectionChanged += new System.EventHandler(this.txtJson_SelectionChanged);
             this.txtJson.TextChanged += new System.EventHandler(this.txtJson_TextChangedAsync);
             // 
             // toolStrip1
@@ -348,8 +346,7 @@ namespace EPocalipse.Json.Viewer
             this.toolStripSeparator1,
             this.btnFormat,
             this.btnStrip,
-            this.toolStripSplitButton1,
-            this.btnViewSelected});
+            this.toolStripSplitButton1});
             this.toolStrip1.Location = new System.Drawing.Point(6, 6);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Padding = new System.Windows.Forms.Padding(0, 0, 2, 0);
@@ -446,17 +443,6 @@ namespace EPocalipse.Json.Viewer
             this.removeSpecialCharsToolStripMenuItem.Text = "Remove special chars (\\)";
             this.removeSpecialCharsToolStripMenuItem.Click += new System.EventHandler(this.removeSpecialCharsToolStripMenuItem_Click);
             // 
-            // btnViewSelected
-            // 
-            this.btnViewSelected.CheckOnClick = true;
-            this.btnViewSelected.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.btnViewSelected.Image = ((System.Drawing.Image)(resources.GetObject("btnViewSelected.Image")));
-            this.btnViewSelected.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnViewSelected.Name = "btnViewSelected";
-            this.btnViewSelected.Size = new System.Drawing.Size(168, 36);
-            this.btnViewSelected.Text = "View Selected";
-            this.btnViewSelected.Click += new System.EventHandler(this.btnViewSelected_Click);
-            // 
             // lblError
             // 
             this.lblError.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -537,7 +523,6 @@ namespace EPocalipse.Json.Viewer
         private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem removenToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeSpecialCharsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripButton btnViewSelected;
         private System.Windows.Forms.RichTextBox txtJson;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.Windows.Forms.ToolStripMenuItem mnuCopyName;
