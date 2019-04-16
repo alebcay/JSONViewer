@@ -1,20 +1,27 @@
 # JsonViewer
-Clone of epocalipse.com JsonViewer
+A modified version of [realworld666/JsonViewer](https://github.com/realworld666/JsonViewer), which is itself based off of epocalipse.com JsonViewer
 
-The JSON View package is a set of 3 viewers available in the following flavors:
+The JSON View package is a set of two viewers available in the following flavors:
 1) A standalone viewer - JsonView.exe
-2) A plugin for Fiddler 2 (http://www.fiddler2.com/) - FiddlerJsonViewer.dll
-3) A visualizer for Viusal Studio 2005  - JsonVisualizer.dll
+2) A visualizer for Viusal Studio - JsonVisualizer.dll
 
 The viewer supports plugins to allow you to customize the way JSON objects are displayed. Sample plugins 
 are provided within the source.
+
+Improvements
+============
+- JSON parsing moved to background worker and throttled for performance
+- Better status information
+- HiDPI support
+- Minor bugfixes and feature cleanup
+- 64-bit build
+- Updated Newtonsoft.Json and retarget for .NET 4.5
 
 Installation
 ============
 
 The archive contains the following directories:
 \JsonView
-\Fiddler
 \Visualizer
 
 - To use the standalone viewer, run JsonView.exe from \JsonView
