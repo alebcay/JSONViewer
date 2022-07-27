@@ -216,13 +216,13 @@ namespace EPocalipse.Json.JsonView
         }
 
         /// <summary>
-        /// Expands all the nodes
+        /// Expands the selected node and its children
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        /// <remarks>Menu item Viewer > Expand All</remarks>
+        /// <remarks>Menu item Viewer > Expand Selected</remarks>
         /// <!---->
-        private void expandAllToolStripMenuItem_Click(object sender, EventArgs e)
+        private void expandSelectedToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Control c;
             c = this.JsonViewer.Controls.Find("tvJson", true)[0];
@@ -274,6 +274,95 @@ namespace EPocalipse.Json.JsonView
             if (node != null && node.JsonObject.Value != null)
             {
                 Clipboard.SetText(node.JsonObject.Value.ToString());
+            }
+        }
+
+        /// <summary>
+        /// Expands all nodes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>Menu item Viewer > Expand All</remarks>
+        /// <!---->
+        private void expandAllMenuItem_Click(object sender, EventArgs e)
+        {
+            Control c;
+            c = this.JsonViewer.Controls.Find("tvJson", true)[0];
+            ((TreeView)c).BeginUpdate();
+            try
+            {
+                if (((TreeView)c).SelectedNode != null)
+                {
+                    TreeNode node = ((TreeView)c).SelectedNode;
+                    while (node.Parent != null)
+                    {
+                        node = node.Parent;
+                    }
+
+                    node.ExpandAll();
+                }
+            }
+            finally
+            {
+                ((TreeView)c).EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Collapses the selected node and its children
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>Menu item Viewer > Collapse Selected</remarks>
+        /// <!---->
+        private void collapseSelectedToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Control c;
+            c = this.JsonViewer.Controls.Find("tvJson", true)[0];
+            ((TreeView)c).BeginUpdate();
+            try
+            {
+                if (((TreeView)c).SelectedNode != null)
+                {
+                    TreeNode topNode = ((TreeView)c).TopNode;
+                    ((TreeView)c).SelectedNode.Collapse(false);
+                    ((TreeView)c).TopNode = topNode;
+                }
+            }
+            finally
+            {
+                ((TreeView)c).EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Collapses all nodes
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        /// <remarks>Menu item Viewer > Collapse All</remarks>
+        /// <!---->
+        private void collapseAllToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Control c;
+            c = this.JsonViewer.Controls.Find("tvJson", true)[0];
+            ((TreeView)c).BeginUpdate();
+            try
+            {
+                if (((TreeView)c).SelectedNode != null)
+                {
+                    TreeNode node = ((TreeView)c).SelectedNode;
+                    while (node.Parent != null)
+                    {
+                        node = node.Parent;
+                    }
+
+                    node.Collapse(false);
+                }
+            }
+            finally
+            {
+                ((TreeView)c).EndUpdate();
             }
         }
     }
