@@ -60,7 +60,7 @@ namespace EPocalipse.Json.JsonView
                 // Get all Description attributes on this assembly
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyDescriptionAttribute), false);
                 // If there aren't any Description attributes, return an empty string
-                if (attributes.Length == 0)
+                if (attributes.Length < 1)
                     return "";
                 // If there is a Description attribute, return its value
                 return ((AssemblyDescriptionAttribute)attributes[0]).Description;
@@ -74,7 +74,7 @@ namespace EPocalipse.Json.JsonView
                 // Get all Product attributes on this assembly
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyProductAttribute), false);
                 // If there aren't any Product attributes, return an empty string
-                if (attributes.Length == 0)
+                if (attributes.Length < 1)
                     return "";
                 // If there is a Product attribute, return its value
                 return ((AssemblyProductAttribute)attributes[0]).Product;
@@ -88,7 +88,7 @@ namespace EPocalipse.Json.JsonView
                 // Get all Copyright attributes on this assembly
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCopyrightAttribute), false);
                 // If there aren't any Copyright attributes, return an empty string
-                if (attributes.Length == 0)
+                if (attributes.Length < 1)
                     return "";
                 // If there is a Copyright attribute, return its value
                 return ((AssemblyCopyrightAttribute)attributes[0]).Copyright;
@@ -102,7 +102,7 @@ namespace EPocalipse.Json.JsonView
                 // Get all Company attributes on this assembly
                 object[] attributes = Assembly.GetExecutingAssembly().GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
                 // If there aren't any Company attributes, return an empty string
-                if (attributes.Length == 0)
+                if (attributes.Length < 1)
                     return "";
                 // If there is a Company attribute, return its value
                 return ((AssemblyCompanyAttribute)attributes[0]).Company;
